@@ -42,6 +42,7 @@ public class ProductDAOImpl implements ProductDAO {
                 product.setProductId(rs.getInt(1));
             }
              generatedID = rs.getInt(1);
+            //  
 
              System.out.println("======= INSIDE ADD PRODUCT =============");
 
