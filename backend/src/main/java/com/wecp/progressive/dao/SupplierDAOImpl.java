@@ -8,31 +8,31 @@ public class SupplierDAOImpl implements SupplierDAO {
 
     @Override
     public int addSupplier(Supplier supplier) {
-        // TODO Auto-generated method stub
-        return 0;
+        
+        return -1;
     }
 
     @Override
     public void deleteSupplier(int supplierId) {
-        // TODO Auto-generated method stub
+        
         
     }
 
     @Override
     public List<Supplier> getAllSuppliers() {
-        // TODO Auto-generated method stub
+        
         return null;
     }
 
     @Override
     public Supplier getSupplierById(int supplierId) {
-        // TODO Auto-generated method stub
+        
         return null;
     }
 
     @Override
     public void updateSupplier(Supplier supplier) {
-        // TODO Auto-generated method stub
+        
         
     }
 

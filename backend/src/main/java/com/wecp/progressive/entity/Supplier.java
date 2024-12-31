@@ -1,10 +1,10 @@
 package com.wecp.progressive.entity;
 
-public class Supplier {
-private int supplier_id;
-private String supplier_name;
-private String contact_email;
-private String contact_phone;
+public class Supplier implements Comparable<Supplier> {
+private int supplierId;
+private String supplierName;
+private String email;
+private String phone;
 private String address;
 
 private String role;
@@ -12,46 +12,46 @@ private String role;
 public Supplier() {
 }
 
-public Supplier(int supplier_id, String supplier_name, String contact_email, String contact_phone, String address,
+public Supplier(int supplierId, String supplierName, String email, String phone, String address,
         String role) {
-    this.supplier_id = supplier_id;
-    this.supplier_name = supplier_name;
-    this.contact_email = contact_email;
-    this.contact_phone = contact_phone;
+    this.supplierId = supplierId;
+    this.supplierName = supplierName;
+    this.email = email;
+    this.phone = phone;
     this.address = address;
     this.role = role;
 }
 
-public int getSupplier_id() {
-    return supplier_id;
+public int getSupplierId() {
+    return supplierId;
 }
 
-public void setSupplier_id(int supplier_id) {
-    this.supplier_id = supplier_id;
+public void setSupplierId(int supplierId) {
+    this.supplierId = supplierId;
 }
 
-public String getSupplier_name() {
-    return supplier_name;
+public String getSupplierName() {
+    return supplierName;
 }
 
-public void setSupplier_name(String supplier_name) {
-    this.supplier_name = supplier_name;
+public void getSupplierNamename(String supplierName) {
+    this.supplierName= supplierName;
 }
 
-public String getContact_email() {
-    return contact_email;
+public String getemail() {
+    return email;
 }
 
-public void setContact_email(String contact_email) {
-    this.contact_email = contact_email;
+public void setemail(String email) {
+    this.email = email;
 }
 
-public String getContact_phone() {
-    return contact_phone;
+public String getphone() {
+    return phone;
 }
 
-public void setContact_phone(String contact_phone) {
-    this.contact_phone = contact_phone;
+public void setphone(String phone) {
+    this.phone = phone;
 }
 
 public String getAddress() {
@@ -70,5 +70,10 @@ public void setRole(String role) {
     this.role = role;
 }
 
+
+@Override
+public int compareTo(Supplier s){
+    return this.supplierName.compareTo(s.getSupplierName());
+}
 
 }
