@@ -1,178 +1,145 @@
 package com.wecp.progressive.dao;
 
-import java.beans.Statement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-// import java.sql.Connection;
-// import java.sql.PreparedStatement;
-// import java.sql.SQLException;
 import java.util.List;
-// import java.sql.Statement;
-import java.sql.*;
 
 import com.wecp.progressive.config.DatabaseConnectionManager;
 import com.wecp.progressive.entity.Product;
 
 public class ProductDAOImpl implements ProductDAO {
 
-    private Connection connection =  null;
-// consturctier 
+    private static Connection connection;
 
+    static {
+        try {
+            connection = DatabaseConnectionManager.getConnection();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
     @Override
-    public int addProduct(Product product)  throws SQLException{
-         connection = DatabaseConnectionManager.getConnection();
-        // PreparedStatement pt = null;
-        int generatedID = -1;
-        String q = "insert into product (warehouse_id, product_name,product_description,quantity,price) values (?,?,?,?,?)";
+    public int addProduct(Product product) throws SQLException {
+        String slq = "INSERT INTO product (warehouse_id, product_name, product_description, quantity, price) VALUES (?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = connection.prepareStatement(slq, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, product.getWarehouseId());
+            ps.setString(2, product.getProductName());
+            ps.setString(3, product.getProductDescription());
+            ps.setInt(4, product.getQuantity());
+            ps.setLong(5, product.getPrice());
 
-        try(PreparedStatement pt = connection.prepareStatement(q,java.sql.Statement.RETURN_GENERATED_KEYS)) {
-
-            pt.setInt(1,product.getWarehouseId());
-            pt.setString(2, product.getProductName());
-            pt.setString(3, product.getProductDescription());
-            pt.setInt(4,product.getQuantity());
-            pt.setDouble(5, product.getPrice());
-
-            int rows = pt.executeUpdate();
-            
-
-            ResultSet rs = pt.getGeneratedKeys();
-
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
             if(rs.next()){
                 product.setProductId(rs.getInt(1));
+                return product.getProductId();
             }
-             generatedID = rs.getInt(1);
-            //  
-
-             System.out.println("======= INSIDE ADD PRODUCT =============");
-
+            return -1;
         } catch (Exception e) {
+            // TODO: handle exception
             e.printStackTrace();
-            throw e;
-        } finally{
-            if(!connection.isClosed()){
-                connection.close();
-            }
+            return -1;
         }
-        return generatedID;
-    }
 
-    @Override
-    public void deleteProduct(int productId) throws SQLException {
-        //
-        connection = DatabaseConnectionManager.getConnection();
-        String q = "delete product where product_id = ? ";
-
-        try(PreparedStatement pt  = connection.prepareStatement(q)){
-            pt.setInt(1,productId);
-
-            pt.executeUpdate();
-        } catch(SQLException e){
-            e.printStackTrace();
-            throw e;
-        } finally{
-            if(!connection.isClosed()){
-                connection.close();
-            }
-        }
-        
-    }
-
-    @Override
-    public List<Product> getAllProducts() throws SQLException {
-        String q = "select * from product";
-        List<Product> products = new ArrayList<>();
-
-        connection = DatabaseConnectionManager.getConnection();
-
-        try(PreparedStatement pt  = connection.prepareStatement(q)){
-            ResultSet rs = pt.executeQuery();
-
-            // List<Product> products = new ArrayList<>();
-
-            while(rs.next()){
-                Product product = new Product();
-
-                product.setProductId(rs.getInt("product_id"));
-                product.setPrice(rs.getLong("price"));
-                product.setProductDescription(rs.getString("product_description"));
-                product.setProductName(rs.getString("product_name"));
-                product.setQuantity(rs.getInt("quantity"));
-                product.setWarehouseId(rs.getInt("warehouse_id"));
-
-                products.add(product);
-            }
-
-            // return products;
-        } catch(SQLException e){
-            e.printStackTrace();
-            throw e;
-        } finally{
-            if(!connection.isClosed()){
-                connection.close();
-            }
-        }
-        return products;
     }
 
     @Override
     public Product getProductById(int productId) throws SQLException {
-        connection = DatabaseConnectionManager.getConnection();
-        Product product = new Product();
-
-        String q  = "select * from product where product_id = ?";
-
-        try(PreparedStatement pt = connection.prepareStatement(q)){
-            pt.setInt(1,productId);
-
-            ResultSet rs = pt.executeQuery();
-
-            
+        String slq = "SELECT * FROM product WHERE product_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(slq);
+            ps.setInt(1, productId);
+            ResultSet rs =  ps.executeQuery();
             if(rs.next()){
+               Product p = new Product();
+               p.setPrice(rs.getLong("price"));
+               p.setProductDescription(rs.getString("product_description"));
+               p.setProductId(rs.getInt("product_id"));
+               p.setProductName(rs.getString("product_name"));
+               p.setQuantity(rs.getInt("quantity"));
+               p.setWarehouseId(rs.getInt("warehouse_id"));
 
-                product.setProductId(rs.getInt("product_id"));
-                product.setPrice(rs.getLong("price"));
-                product.setProductDescription(rs.getString("product_description"));
-                product.setProductName(rs.getString("product_name"));
-                product.setQuantity(rs.getInt("quantity"));
-                product.setWarehouseId(rs.getInt("warehouse_id"));
-
+               return p;
             }
-            // return product;
-        } catch(SQLException e){
+            return null;
+        } catch (Exception e) {
+            // TODO: handle exception
             e.printStackTrace();
-            throw e;
-        }finally{
-            if(!connection.isClosed()){
-                connection.close();
-            }
-        }
-        return product;
-    }
-
-    @Override
-    public void updateProduct(Product product) throws SQLException {
-        connection = DatabaseConnectionManager.getConnection();
-        String q = "UPDATE product SET warehouse_id =?,product_name =?,product_description = ? ,quantity = ?,price=? where product_id = ? ";
-
-        try(PreparedStatement pt = connection.prepareStatement(q)){
-            pt.setInt(1,product.getWarehouseId());
-            pt.setString(2, product.getProductName());
-            pt.setString(3, product.getProductDescription());
-            pt.setInt(4,product.getQuantity());
-            pt.setDouble(5, product.getPrice());
-            pt.setInt(6,product.getProductId());
-
-            pt.executeUpdate();
-        } catch(SQLException e){
-            e.printStackTrace();
-            throw e;
-        } finally{
-            if(!connection.isClosed()){
-                connection.close();
-            }
+            return null;
         }
         
     }
 
+    @Override
+    public void updateProduct(Product product) throws SQLException {
+        String sql = "UPDATE product SET  warehouse_id = ?, product_name = ?, product_description = ?, quantity = ?, price = ? WHERE product_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, product.getWarehouseId());
+            ps.setString(2, product.getProductName());
+            ps.setString(3, product.getProductDescription());
+            ps.setInt(4, product.getQuantity());
+            ps.setLong(5, product.getPrice());
+            ps.setInt(6, product.getProductId());
+
+            ps.executeUpdate();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }        
+    }
+
+    @Override
+    public void deleteProduct(int productId) throws SQLException {
+        String sql = "DELETE FROM product WHERE product_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, productId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Product> getAllProducts() throws SQLException {
+        List<Product> ans= new ArrayList<>();
+        String query=" SELECT * FROM product";
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ResultSet rs= ps.executeQuery();
+            while(rs.next()){
+                Product p = new Product();
+                p.setPrice(rs.getLong("price"));
+                p.setProductDescription(rs.getString("product_description"));
+                p.setProductId(rs.getInt("product_id"));
+                p.setProductName(rs.getString("product_name"));
+                p.setQuantity(rs.getInt("quantity"));
+                p.setWarehouseId(rs.getInt("warehouse_id"));
+                
+                ans.add(p);
+            }
+            return ans;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void close () {
+        try {
+            if(connection != null)
+                connection.close();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+    }
 }

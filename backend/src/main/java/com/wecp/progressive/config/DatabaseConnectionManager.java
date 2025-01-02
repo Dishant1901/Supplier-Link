@@ -26,7 +26,7 @@ private static final Properties properties = new Properties();
     }
  
     public static Connection getConnection() throws SQLException{
-        System.out.println("Inside Connection method");
+        // System.out.println("Inside Connection method");
         String url=properties.getProperty("spring.datasource.url");
         String user=properties.getProperty("spring.datasource.username");
         String password=properties.getProperty("spring.datasource.password");

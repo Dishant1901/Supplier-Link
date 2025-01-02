@@ -1,79 +1,105 @@
 package com.wecp.progressive.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Supplier implements Comparable<Supplier> {
-private int supplierId;
-private String supplierName;
-private String email;
-private String phone;
-private String address;
 
-private String role;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int supplierId;
+    private String supplierName;
+    private String email;
+    private String phone;
+    private String address;
+    private String username;
+    private String password;
+    private String role;
 
-public Supplier() {
-}
+    public Supplier() {
+    }
 
-public Supplier(int supplierId, String supplierName, String email, String phone, String address,
-        String role) {
-    this.supplierId = supplierId;
-    this.supplierName = supplierName;
-    this.email = email;
-    this.phone = phone;
-    this.address = address;
-    this.role = role;
-}
+    public Supplier(int supplierId, String supplierName, String email, String phone, String address, String username, String password, String role) {
+        this.supplierId = supplierId;
+        this.supplierName = supplierName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
-public int getSupplierId() {
-    return supplierId;
-}
+    public String getEmail() {
+        return email;
+    }
 
-public void setSupplierId(int supplierId) {
-    this.supplierId = supplierId;
-}
+    public int getSupplierId() {
+        return supplierId;
+    }
 
-public String getSupplierName() {
-    return supplierName;
-}
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
+    }
 
-public void getSupplierNamename(String supplierName) {
-    this.supplierName= supplierName;
-}
+    public String getSupplierName() {
+        return supplierName;
+    }
 
-public String getemail() {
-    return email;
-}
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
 
-public void setemail(String email) {
-    this.email = email;
-}
+    public String getUsername() {
+        return username;
+    }
 
-public String getphone() {
-    return phone;
-}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-public void setphone(String phone) {
-    this.phone = phone;
-}
+    public String getPassword() {
+        return password;
+    }
 
-public String getAddress() {
-    return address;
-}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-public void setAddress(String address) {
-    this.address = address;
-}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-public String getRole() {
-    return role;
-}
+    public String getPhone() {
+        return phone;
+    }
 
-public void setRole(String role) {
-    this.role = role;
-}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
+    public String getAddress() {
+        return address;
+    }
 
-@Override
-public int compareTo(Supplier s){
-    return this.supplierName.compareTo(s.getSupplierName());
-}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public int compareTo(Supplier otherSupplier) {
+        // Implement comparison logic based on account balance
+        return this.getSupplierName().compareTo(otherSupplier.getSupplierName());
+    }
 }

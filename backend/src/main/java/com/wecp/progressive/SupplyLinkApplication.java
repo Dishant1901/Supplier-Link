@@ -1,36 +1,34 @@
-// package com.wecp.progressive;
-
-// public class SupplyLinkApplication {
-//     public static void main(String[] args) {
-//         System.out.println("Welcome to SupplyLink Project!");
-//     }
-// }
-
-
 package com.wecp.progressive;
- 
-import java.sql.SQLException;
- 
-import com.wecp.progressive.dao.ProductDAOImpl;
-import com.wecp.progressive.entity.Product;
- 
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
 public class SupplyLinkApplication {
-    public static void main(String[] args) throws SQLException {
-        System.out.println("Welcome to SupplyLink Project!");
- 
-        ProductDAOImpl pimpl = new ProductDAOImpl();
- 
-       // INSERT INTO product (warehouse_id,product_name,product_decription,quantity,price) VALUES (?,?,?,?,?)
-       Product p1 =  new Product();
-       p1.setWarehouseId(1);
-       p1.setProductName("Apple Laptop");
-       p1.setProductDescription("Apple Lap");
-       p1.setQuantity(1);
-       p1.setPrice(5000L);
-       pimpl.addProduct(p1);
-       Product p = pimpl.getProductById(1);
-       System.out.println(p.getProductName());
+    public static void main(String[] args) {
+        System.out.println("Welcome to SupplyLink Progressive Project!");
     }
 }
+
+
+// package com.wecp.progressive;
  
-// has context menu
+// import java.sql.SQLException;
+
+// import org.springframework.boot.SpringApplication;
+// import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+// import com.wecp.progressive.dao.ProductDAOImpl;
+// import com.wecp.progressive.entity.Product;
+ 
+// @SpringBootApplication
+// public class SupplyLinkApplication {
+//     public static void main(String[] args)  {
+//         System.out.println("Welcome to SupplyLink Project!");
+//         // System.out.println("Hello SupplyLink");
+//         // SpringApplication.run(SupplyLinkApplication.class, args);
+
+
+//     }
+// }
+ 
+// // has context menu
