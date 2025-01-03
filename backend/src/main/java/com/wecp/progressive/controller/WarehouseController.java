@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-// @RestController 
+@RestController
 public class WarehouseController {
 
     public ResponseEntity<List<Warehouse>> getAllWarehouses() {

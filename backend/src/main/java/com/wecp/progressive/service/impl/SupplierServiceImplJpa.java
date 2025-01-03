@@ -4,12 +4,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.wecp.progressive.dao.SupplierDAO;
 import com.wecp.progressive.entity.Supplier;
 import com.wecp.progressive.repository.SupplierRepository;
 import com.wecp.progressive.service.SupplierService;
-
+ 
+@Service
 public class SupplierServiceImplJpa implements SupplierService  {
 
     private SupplierDAO supplierDAO;
