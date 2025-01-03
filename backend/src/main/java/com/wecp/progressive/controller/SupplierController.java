@@ -4,7 +4,7 @@ import com.wecp.progressive.entity.Supplier;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-
+// day 4a
 public class SupplierController {
 
     public ResponseEntity<List<Supplier>> getAllSuppliers() {
